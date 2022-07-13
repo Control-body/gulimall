@@ -1,0 +1,34 @@
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: test_baidu
+#          uri: https://www.baidu.com
+#          predicates:
+#            - Query=url,baidu
+#
+#       - id: test_qq
+#         uri: https://www.qq.com
+#         predicates:
+#           - Query=url,qq
+spring:
+  cloud:
+    gateway:
+      routes:
+        #和商品相关的路由配置prodect前缀
+        - id: gulimall-product
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 前端项目都加spi的前缀
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+
