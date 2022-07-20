@@ -35,7 +35,7 @@ import com.atguigu.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
-
+// 配置service层 然后调用对应的方法
     @Autowired
     private CouponFeignService couponFeignService;
 

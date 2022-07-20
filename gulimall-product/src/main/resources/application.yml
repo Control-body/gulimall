@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://101.132.174.210:3306/gulimall_pms
+    url: jdbc:mysql://101.132.174.210:3306/gulimall_pms?useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.jdbc.Driver
   cloud:
     nacos:
