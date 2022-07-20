@@ -2,8 +2,15 @@ spring:
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
-
+    alicloud:
+      accesskey: LTAI5tLqdt2oXWec2nnZUEzv
+      secretkey: XNaMy8k2bgtfF63eH2H34Nfa7V8lMM
+      oss:
+        endpoint: oss-cn-shanghai.aliyuncs.com
+        bucket: gulimail-hellolb
   application:
-    name: third-party
+    name: gulimall-third-party
 server:
   port: 30000
+
+
