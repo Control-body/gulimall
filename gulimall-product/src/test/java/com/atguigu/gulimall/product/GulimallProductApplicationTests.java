@@ -22,8 +22,8 @@ class GulimallProductApplicationTests {
 
     @Test
     void contextLoads() {
-        BrandEntity brandEntity = new BrandEntity();
-        brandEntity.setName("华为");
+//        BrandEntity brandEntity = new BrandEntity();
+//        brandEntity.setName("华为");
 //        数据的增加
 //        boolean save = brandService.save(brandEntity);
 //        if (save){

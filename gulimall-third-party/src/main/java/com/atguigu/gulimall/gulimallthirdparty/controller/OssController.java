@@ -6,6 +6,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.atguigu.common.utils.R;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,18 +38,18 @@ public class OssController {
     @Value("${spring.cloud.alicloud.accesskey}")
     String accessId;
     @RequestMapping("/oss/policy")
-    public Map<String, String> policy(){
+    public R policy(){
         Map<String, String> respMap=null;
 //        https://gulimail-hellolb.oss-cn-shanghai.aliyuncs.com/001.jpg
         // 填写Bucket名称，例如examplebucket。
 
         // 填写Host地址，格式为https://bucketname.endpoint。
-        String host = "https://"+bucket+endpoint;
+        String host = "https://"+bucket+"."+endpoint;
         // 设置上传回调URL，即回调服务器地址，用于处理应用服务器与OSS之间的通信。OSS会在文件上传完成后，把文件上传信息通过此回调URL发送给应用服务器。
 //        String callbackUrl = "https://192.168.0.0:8888";
         // 设置上传到OSS文件的前缀，可置空此项。置空后，文件将上传至Bucket的根目录下。
         String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String dir = format+"";
+        String dir = format+"/";
         try {
             long expireTime = 30;
             long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
@@ -90,7 +91,8 @@ public class OssController {
             // Assert.fail(e.getMessage());
             System.out.println(e.getMessage());
         }
-        return respMap;
+        return R.ok().put("data",respMap);
+
     }
 
 }

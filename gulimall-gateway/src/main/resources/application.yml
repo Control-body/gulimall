@@ -33,7 +33,6 @@ spring:
             - Path=/api/thirdparty/**
           filters:
             - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
-
         # 前端项目都加spi的前缀
         - id: admin_route
           uri: lb://renren-fast
