@@ -3,15 +3,18 @@ package com.atguigu.gulimall.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.atguigu.common.exception.BizCodeEnum;
+import com.atguigu.common.vo.MemberRespVo;
+import com.atguigu.gulimall.member.exception.PhoneExistException;
+import com.atguigu.gulimall.member.exception.UserNameExistException;
 import com.atguigu.gulimall.member.feign.CouponFeignService;
+import com.atguigu.gulimall.member.vo.MemberLoginVo;
+import com.atguigu.gulimall.member.vo.SocialUser;
+import com.atguigu.gulimall.member.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gulimall.member.entity.MemberEntity;
 import com.atguigu.gulimall.member.service.MemberService;
@@ -44,7 +47,7 @@ public class MemberController {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("会员昵称张三");
         R membercoupons = couponFeignService.membercoupons();
-        return R.ok().put("member",memberEntity).put("coupons",membercoupons.get("coupons"));
+        return R.ok().put("mapper",memberEntity).put("coupons",membercoupons.get("coupons"));
     }
 
     @Value("${membre.user.name}")
@@ -58,17 +61,47 @@ public class MemberController {
     public R test2(){
         return R.ok().put("name",name).put("age",age);
     }
+    @PostMapping("/register")
+    public  R register(@RequestBody UserRegisterVo vo){
+        try {
+            memberService.register(vo);
+        } catch (PhoneExistException e) {
+            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(), BizCodeEnum.PHONE_EXIST_EXCEPTION.getMsg());
+        } catch (UserNameExistException e) {
+            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION.getCode(), BizCodeEnum.USER_EXIST_EXCEPTION.getMsg());
+        }
+        return R.ok();
+    }
+    /**
+     * 登录  远程调用登录 方法
+     */
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo vo){
+        MemberEntity memberEntity = memberService.login(vo);
+        if(memberEntity != null){
+            return R.ok().setData(memberEntity);
+        }else {
+            return R.error(BizCodeEnum.LOGINACTT_PASSWORD_ERROR.getCode(), BizCodeEnum.LOGINACTT_PASSWORD_ERROR.getMsg());
+        }
+    }
+    @PostMapping("/oauth2/login")
+    public R oauth2login(@RequestBody SocialUser vo) throws Exception {
+        MemberEntity memberEntity = memberService.login(vo);
+        if(memberEntity != null){
+//            登录成功 并且返回数据
+            return R.ok().setData(memberEntity);
+        }else {
+            return R.error(BizCodeEnum.LOGINACTT_PASSWORD_ERROR.getCode(), BizCodeEnum.LOGINACTT_PASSWORD_ERROR.getMsg());
+        }
+    }
     /**
      * 列表
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = memberService.queryPage(params);
-
         return R.ok().put("page", page);
     }
-
-
     /**
      * 信息
      */
@@ -76,7 +109,7 @@ public class MemberController {
     public R info(@PathVariable("id") Long id){
 		MemberEntity member = memberService.getById(id);
 
-        return R.ok().put("member", member);
+        return R.ok().put("mapper", member);
     }
 
     /**
@@ -95,10 +128,8 @@ public class MemberController {
     @RequestMapping("/update")
     public R update(@RequestBody MemberEntity member){
 		memberService.updateById(member);
-
         return R.ok();
     }
-
     /**
      * 删除
      */

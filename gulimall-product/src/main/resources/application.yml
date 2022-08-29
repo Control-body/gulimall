@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: root
+    password: lb19182030
     url: jdbc:mysql://101.132.174.210:3306/gulimall_pms?useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.jdbc.Driver
   cloud:
@@ -10,6 +10,16 @@ spring:
         server-addr: 127.0.0.1:8848
   application:
     name: gulimall-product
+  thymeleaf:
+    cache: false
+  redis:
+    host: 101.132.174.210
+    port: 6379
+
+#    suffix: .html
+#    prefix: classpath:/templates
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 # MapperScan
 # sql映射文件位置
 mybatis-plus:
@@ -35,3 +45,9 @@ logging:
 #    maximum-pool-size: 10
 #    minimum-idle: 10
 #    read-only: false
+# 设置feign 的超时时间
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+
+

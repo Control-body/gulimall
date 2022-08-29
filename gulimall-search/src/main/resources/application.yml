@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+    name: gulimall-search
+  thymeleaf:
+    cache: false
+  redis:
+    host: 101.132.174.210
+    port: 6379
+server:
+  port: 12000
+
+# 设置feign 的超时时间
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000

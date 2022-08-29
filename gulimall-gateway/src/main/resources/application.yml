@@ -33,6 +33,20 @@ spring:
             - Path=/api/thirdparty/**
           filters:
             - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
+#            menmber用户管理系统的 网关路由
+        - id: member_route
+          uri: lb://gulimall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+#       /api/ware/wareinfo/list?t=1658925165398&page=1&limit=10&key=
+        - id: ware_route
+          uri: lb://gulimall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         # 前端项目都加spi的前缀
         - id: admin_route
           uri: lb://renren-fast
@@ -42,3 +56,20 @@ spring:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
 
 
+#       gulmall host断言规则
+        - id: gulimall_host_route
+          uri: lb://gulimall-product
+          predicates:
+            - Host=gulimall.com,item.gulimall.com
+        - id: gulimall-search_route
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com,
+        - id: gulimall_auth_route
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.gulimall.com,
+        - id: gulimall_cart_route
+          uri: lb://gulimall-cart
+          predicates:
+            - Host=cart.gulimall.com,

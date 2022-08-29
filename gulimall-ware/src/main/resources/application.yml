@@ -1,8 +1,8 @@
 spring:
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://101.132.174.210:3306/gulimall_wms
+    password: lb19182030
+    url: jdbc:mysql://101.132.174.210:3306/gulimall_wms?useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.jdbc.Driver
   cloud:
     nacos:
@@ -19,3 +19,12 @@ mybatis-plus:
       id-type: auto
 server:
   port: 11000
+
+
+logging:
+  level:
+    com.atguigu: debug
+# 设置feign 的超时时间
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000

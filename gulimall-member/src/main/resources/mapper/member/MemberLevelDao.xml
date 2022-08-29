@@ -18,4 +18,11 @@
     </resultMap>
 
 
+
+    <select id="getDefaultLevel" resultType="com.atguigu.gulimall.member.entity.MemberLevelEntity">
+        SELECT * FROM `ums_member_level`
+        WHERE default_status = 1
+    </select>
+
+
 </mapper>

@@ -65,14 +65,17 @@ public class CategoryController {
     /**
      * 修改
      */
+
     @RequestMapping("/update")
     public R update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
+//        级联进行修改
+		categoryService.updateCascade(category);
 
         return R.ok();
     }
 
     /**
+     *
      * 修改
      */
     @RequestMapping("/update/sort")
@@ -88,8 +91,6 @@ public class CategoryController {
     public R delete(@RequestBody Long[] catIds){
 //		categoryService.removeByIds(Arrays.asList(catIds)); 不安全我们重写
         categoryService.removeMenuByIds(Arrays.asList(catIds));
-
-
         return R.ok();
     }
 

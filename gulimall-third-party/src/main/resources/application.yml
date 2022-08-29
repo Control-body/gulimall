@@ -8,8 +8,15 @@ spring:
       oss:
         endpoint: oss-cn-shanghai.aliyuncs.com
         bucket: gulimail-hellolb
+      sms:
+        host: https://dfsns.market.alicloudapi.com
+        path: /data/send_sms
+        skin: TPL_0000
+        appcode: eeaa920cd69e46daaa4f009e0498099e
   application:
     name: gulimall-third-party
+
+
 server:
   port: 30000
 

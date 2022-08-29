@@ -1,14 +1,15 @@
 package com.atguigu.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.atguigu.gulimall.product.entity.ProductAttrValueEntity;
+import com.atguigu.gulimall.product.service.ProductAttrValueService;
+import com.atguigu.gulimall.product.vo.AttrRespVo;
+import com.atguigu.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gulimall.product.entity.AttrEntity;
 import com.atguigu.gulimall.product.service.AttrService;
@@ -30,6 +31,17 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+    @Autowired
+    private ProductAttrValueService productAttrValueService;
+
+    /**
+     * /api/product/attr/base/listforspu/4
+     */
+    @RequestMapping("/base/listforspu/{spuId}")
+    public R baseListforspu(@PathVariable("spuId") Long params){
+        List<ProductAttrValueEntity> entities=productAttrValueService.baseListforspu(params);
+        return R.ok().put("data",entities);
+    }
     /**
      * 列表
      */
@@ -42,35 +54,48 @@ public class AttrController {
 
 
     /**
-     * 信息
+     * 信息 http://localhost:88/api/product/attr/info/3
      */
     @RequestMapping("/info/{attrId}")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
-
-        return R.ok().put("attr", attr);
+//		AttrEntity attr = attrService.getById(attrId);
+        AttrRespVo AttrRespVo = attrService.getAttrInfo(attrId);
+        return R.ok().put("attr", AttrRespVo);
     }
 
     /**
      * 保存
+     * 使用Vo实体类进行 封装
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
+    public R save(@RequestBody AttrVo attr){
+//
+		attrService.saveAttr(attr);
 
         return R.ok();
     }
 
     /**
-     * 修改
+     * 修改  http://localhost:88/api/product/attr/update
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrEntity attr){
-		attrService.updateById(attr);
+    public R update(@RequestBody AttrVo attr){
+//		attrService.updateById(attr);
+        attrService.updateAttr(attr);
 
         return R.ok();
     }
+    /**
+     * 批量进行修改数据
+     *  http://localhost:88/api/product/attr/update/3
+     */
+    @PostMapping("/update/{spuId}")
+    public R update(@PathVariable Long spuId,@RequestBody List<ProductAttrValueEntity> entities){
 
+        productAttrValueService.updateSpuAttr(spuId,entities);
+
+        return R.ok();
+    }
     /**
      * 删除
      */
@@ -80,5 +105,18 @@ public class AttrController {
 
         return R.ok();
     }
+    /**
+     * api/product/attr/base/list/0?t=116&page=1&limit=10&key=
+     *
+     */
+    @GetMapping("/{attrType}/list/{catelogId}")
+    public R baseAttrList(@RequestParam Map<String,Object> params,
+                          @PathVariable("catelogId") Long catelogId,
+                          @PathVariable("attrType") String type){
+//       根据参数分页查询 条件查询
+        PageUtils page = attrService.queryBaseAttrPage(params, catelogId,type);
+        return R.ok().put("page",page);
+    }
+
 
 }

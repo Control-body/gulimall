@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: root
+    password: lb19182030
     url: jdbc:mysql://101.132.174.210:3306/gulimall_oms
     driver-class-name: com.mysql.jdbc.Driver
   cloud:
@@ -10,6 +10,16 @@ spring:
         server-addr: 127.0.0.1:8848
   application:
     name: gulimall-order
+  rabbitmq:
+    host: 101.132.174.210
+    port: 5672
+    virtual-host: /
+    username: guest
+    password: guest
+#    # 开启发送端确认
+#    publisher-confirms: true
+    publisher-confirm-type: correlated
+
 # MapperScan
 # sql映射文件位置
 mybatis-plus:

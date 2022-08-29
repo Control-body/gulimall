@@ -12,6 +12,45 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
+<!--       /**
+         * SELECT ag.attr_group_id,
+         * ag.attr_group_name,
+         * arr.attr_id,
+         * attr.attr_name,
+         * ppav.attr_value
+         *  FROM pms_attr_group ag
+         * LEFT JOIN pms_attr_attrgroup_relation arr on
+         * arr.attr_group_id=ag.attr_group_id
+         * LEFT JOIN pms_attr attr on
+         * attr.attr_id=arr.attr_id
+         * LEFT JOIN pms_product_attr_value ppav on
+         * ppav.attr_id=arr.attr_id
+         *  where ag.catelog_id = 225 AND ppav.spu_id=6
+         */-->
+<!--    只要有嵌套属性 就 一定有 结果集封装 就一定使用resultMap -->
+    <resultMap id="spuItemAttrGroup" type="com.atguigu.gulimall.product.vo.SpuItemAttrGroup">
+           <result property="groupName" column="attr_group_name"></result>
+           <collection property="attrs" ofType="com.atguigu.gulimall.product.vo.SpuBaseAttrVo">
+               <result property="attrName" column="attr_name"></result>
+               <result property="attrValue" column="attr_value"></result>
+           </collection>
+    </resultMap>
 
+    <select id="getAttrGroupWithAttrsBySpuId"
+            resultMap="spuItemAttrGroup" >
+        SELECT ag.attr_group_id,
+               ag.attr_group_name,
+               arr.attr_id,
+               attr.attr_name,
+               ppav.attr_value
+        FROM pms_attr_group ag
+                 LEFT JOIN pms_attr_attrgroup_relation arr on
+            arr.attr_group_id=ag.attr_group_id
+                 LEFT JOIN pms_attr attr on
+            attr.attr_id=arr.attr_id
+                 LEFT JOIN pms_product_attr_value ppav on
+            ppav.attr_id=arr.attr_id
+        where ag.catelog_id = #{catalogId} AND ppav.spu_id=#{spuId}
+    </select>
 
 </mapper>

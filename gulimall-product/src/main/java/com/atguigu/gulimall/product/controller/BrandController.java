@@ -2,6 +2,7 @@ package com.atguigu.gulimall.product.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.atguigu.common.valid.AddGroup;
@@ -10,11 +11,7 @@ import com.atguigu.common.valid.UpdateStatusGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gulimall.product.entity.BrandEntity;
 import com.atguigu.gulimall.product.service.BrandService;
@@ -46,7 +43,11 @@ public class BrandController {
 
         return R.ok().put("page", page);
     }
-
+    @GetMapping("/infos")
+    public  R info(@RequestParam("brandIds") List<Long> brandIds){
+        List<BrandEntity> brands=brandService.getBrandsByIds(brandIds);
+        return R.ok().put("brands",brands);
+    }
 
     /**
      * 信息
@@ -64,7 +65,7 @@ public class BrandController {
      */
     @RequestMapping("/save")
     public R save(@Validated(AddGroup.class) @RequestBody BrandEntity brand/*, BindingResult result*/){
-// 使用全局异常处理类进行异常处理
+//        使用全局异常处理类进行异常处理
 //        if(result.hasErrors()){
 //            HashMap<String, String> map = new HashMap<>();
 ////             如果没有问题才会继续执行
@@ -88,7 +89,8 @@ public class BrandController {
      */
     @RequestMapping("/update")
     public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+//        不仅仅是跟新一个表 把关联的表都做修改
+		brandService.updateDetail(brand);
         return R.ok();
     }
     @RequestMapping("/updateStatus")

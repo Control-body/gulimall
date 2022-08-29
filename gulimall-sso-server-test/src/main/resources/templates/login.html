@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+</head>
+<body>
+<form action="/doLogin" method="post">
+    <!--刚才要请求数据的url，没有也没关系，就不跳转了呗-->
+    <input type="hidden" name="url" th:value="${url}">
+    <!--带上当前登录的username-->
+<!--    <input type="hidden" name="user" th:value="${username}">-->
+        用户名：<input name="username" value="test"><br/>
+        密码：<input name="password" type="password" value="test">
+    <input type="submit" value="登录">
+</form>
+</body>
+</html>
