@@ -61,6 +61,7 @@ public class MemberController {
     public R test2(){
         return R.ok().put("name",name).put("age",age);
     }
+//     1. 被 auth认证服务 远程调用
     @PostMapping("/register")
     public  R register(@RequestBody UserRegisterVo vo){
         try {
@@ -72,6 +73,8 @@ public class MemberController {
         }
         return R.ok();
     }
+
+//     2. 被 auth认证服务 远程调用
     /**
      * 登录  远程调用登录 方法
      */

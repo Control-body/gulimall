@@ -1,6 +1,8 @@
 package com.atguigu.gulimallssoclient.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -24,7 +26,8 @@ public class HelloController {
 
     @Value("${sso.server.url}")
     private String ssoServer;
-
+    @Autowired
+    StringRedisTemplate redisTemplate;
     /*** 无需登录就可访问*/
     @ResponseBody
     @GetMapping(value = "/hello")
@@ -33,12 +36,19 @@ public class HelloController {
         System.out.println(request.getRequestURL());
         return "hello"; }
 
-
+    /**
+     * 获取用户信息 如果没有 就进行OSs 登录
+     * @param model
+     * @param session
+     * @param token
+     * @return
+     */
     @GetMapping("/employees")
     public  String employees(Model model, HttpSession session,
                              @RequestParam(value="token",required=false) String token) {
         if(!StringUtils.isEmpty(token)){
-            session.setAttribute("loginUser","zahngsan");
+            String userName = redisTemplate.opsForValue().get(token);
+            session.setAttribute("loginUser",userName);
         }
         Object loginUser = session.getAttribute("loginUser");
         if(loginUser==null){

@@ -38,7 +38,6 @@ public class LoginController {
             return "redirect:" + url + "?token=" + redisKey;
         }
         model.addAttribute("url", url);
-
         // 子系统都没登录过才去登录页
         return "login";
     }

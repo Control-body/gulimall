@@ -7,8 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.data.redis.config.annotation.web.server.EnableRedisWebSession;
 
-
-@EnableRedisHttpSession   // 整合 redis 来整合 session
+// 整合 redis 来整合 session 整合分布式session
+@EnableRedisHttpSession
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication

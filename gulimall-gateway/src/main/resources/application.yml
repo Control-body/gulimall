@@ -54,8 +54,6 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
-
-
 #       gulmall host断言规则
         - id: gulimall_host_route
           uri: lb://gulimall-product

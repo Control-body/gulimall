@@ -23,7 +23,7 @@ public class GulimallSessionConfig {
     @Bean
     public CookieSerializer cookieSerializer(){
         DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
-        // 明确的指定Cookie的作用域
+        // 明确的指定Cookie的作用域  提升下 session 的作用域,
         cookieSerializer.setDomainName("gulimall.com");
         cookieSerializer.setCookieName(AuthServerConstant.SESSION);
         return cookieSerializer;

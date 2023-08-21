@@ -53,8 +53,9 @@ public class OAuth2Controller {
         R login = memberFeignService.login(socialUser);
         if (login.getCode()==0){
             MemberRespVo data = login.getData("data", new TypeReference<MemberRespVo>() {});
-//            保存 进session  TODO 1. 默认发的令牌 sesssion =  作用域 是 当前作用域 （解决子域 共享 问题）
-//            TODO 2. 使用 JDK 的方式 比较 不容易 观察 使用 json 的方式 比较好
+//            保存 进session
+//            TODO 1. 默认发的令牌 sesssion = 作用域 是 当前作用域 （解决子域 共享 问题）
+//            TODO 2. 使用 JDK 的方式比较不容易   观察使用 json的方式比较好
             session.setAttribute("loginUser",data);
             log.info("登录成功----用户{}",data.toString());
         }else {
@@ -64,8 +65,6 @@ public class OAuth2Controller {
     }else{
         return "redirect:http://gulimall.com/login.html";
     }
-
-
 //        登录成功 返回首页
         return "redirect:http://gulimall.com";
     }
